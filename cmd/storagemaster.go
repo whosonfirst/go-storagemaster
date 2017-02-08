@@ -2,13 +2,12 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	_ "fmt"
 	"github.com/whosonfirst/go-storagemaster"
 	"github.com/whosonfirst/go-storagemaster/provider"
 	"io/ioutil"
 	"log"
 	"os"		
-	"os/user"
 	"strings"
 )
 
@@ -41,20 +40,13 @@ func (p *Params) ToExtras() (*storagemaster.StoragemasterExtras, error) {
 
 func main() {
 
-	whoami, err := user.Current()
-	default_creds := ""
-
-	if err == nil {
-		default_creds = fmt.Sprintf("shared:%s/.aws/credentials:default", whoami.HomeDir)
-	}
-
 	var params Params
 
 	flag.Var(&params, "param", "Zero or more query=value parameters.")
 
 	var sm_provider = flag.String("provider", "s3", "...")
 
-	var s3_credentials = flag.String("s3-credentials", default_creds, "...")
+	var s3_credentials = flag.String("s3-credentials", "", "...")
 	var s3_bucket = flag.String("s3-bucket", "", "...")
 	var s3_prefix = flag.String("s3-prefix", "", "...")
 	var s3_region = flag.String("s3-region", "", "...")
@@ -62,7 +54,8 @@ func main() {
 	flag.Parse()
 
 	var sm storagemaster.Provider
-
+	var err error
+	
 	if *sm_provider == "s3" {
 
 		cfg := provider.S3Config{
