@@ -11,18 +11,18 @@ import (
 	"strings"
 )
 
-type Params []string
+type CustomParams []string
 
-func (p *Params) String() string {
+func (p *CustomParams) String() string {
 	return strings.Join(*p, "\n")
 }
 
-func (p *Params) Set(value string) error {
+func (p *CustomParams) Set(value string) error {
 	*p = append(*p, value)
 	return nil
 }
 
-func (p *Params) ToExtras() (*storagemaster.StoragemasterExtras, error) {
+func (p *CustomParams) ToExtras() (*storagemaster.StoragemasterExtras, error) {
 
 	extras, err := storagemaster.NewStoragemasterExtras()
 
@@ -40,9 +40,9 @@ func (p *Params) ToExtras() (*storagemaster.StoragemasterExtras, error) {
 
 func main() {
 
-	var params Params
+	var custom CustomParams
 
-	flag.Var(&params, "param", "Zero or more query=value parameters.")
+	flag.Var(&custom, "custom", "Zero or more custom query=value parameters.")
 
 	var sm_provider = flag.String("provider", "s3", "...")
 
@@ -115,7 +115,7 @@ func main() {
 		   log.Fatal("Invalid PUT args")
 		}
 
-		extras, err := params.ToExtras()
+		extras, err := custom.ToExtras()
 
 		if err != nil {
 		   log.Fatal(err)
