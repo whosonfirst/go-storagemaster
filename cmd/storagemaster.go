@@ -44,12 +44,12 @@ func main() {
 
 	flag.Var(&custom, "custom", "Zero or more custom query=value parameters.")
 
-	var sm_provider = flag.String("provider", "s3", "...")
+	var sm_provider = flag.String("provider", "s3", "A known storagemaster provider. Valid options are: s3")
 
-	var s3_credentials = flag.String("s3-credentials", "", "...")
-	var s3_bucket = flag.String("s3-bucket", "", "...")
-	var s3_prefix = flag.String("s3-prefix", "", "...")
-	var s3_region = flag.String("s3-region", "", "...")
+	var s3_credentials = flag.String("s3-credentials", "", "A string descriptor for your AWS credentials. Valid options are: env:;shared:PATH_TO_SHARED_CREDENTIALS_FILE:SHARED_CREDENTIALS_PROFILE; iam:")
+	var s3_bucket = flag.String("s3-bucket", "", "A valid S3 bucket where cached files are stored.")
+	var s3_prefix = flag.String("s3-prefix", "", "An optional subdirectory (prefix) where cached files are stored in S3.")
+	var s3_region = flag.String("s3-region", "", "A valid AWS S3 region")
 
 	flag.Parse()
 
